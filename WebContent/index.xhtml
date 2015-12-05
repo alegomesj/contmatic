@@ -1,0 +1,146 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<style type="text/css">
+	.ui-widget {
+		font-size: 11px !important;
+		font-family: Verdana, Arial, Tahoma;
+		font-weight: light;
+	}
+	.FontLabel {
+			font-size: 15px !important;
+			font-family: Verdana, Arial, Tahoma;
+			font-weight: bold;
+		}
+</style>
+</h:head>
+
+<h:body>
+
+	<p:ajaxStatus
+		style="width:64px;height:64px;position:fixed;right:5px;bottom:5px">
+		<f:facet name="start">
+			<p:graphicImage value="/images/loading.gif" />
+		</f:facet>
+
+		<f:facet name="complete">
+			<h:outputText value="" />
+		</f:facet>
+	</p:ajaxStatus>
+	
+	<script type="text/javascript">
+	    function handleDrop(event, ui) {
+	        var droppedCel = ui.draggable;
+	 
+	        droppedCel.fadeOut('fast');
+	    }
+	</script>
+
+	<h:form id="form" enctype="multipart/form-data">
+		<p:growl id="msgs" showDetail="false" showSummary="true" />
+
+		<p:fieldset id="availableCelsField" legend="Celulares Disponíveis">
+				        <p:dataGrid id="availableCels" var="cel" value="#{mbCelular.celulares}" columns="3">
+				            <p:panel id="pnl" header="#{cel.nome}" style="text-align:center">
+				                <h:panelGrid columns="1" style="width:100%">
+				                  <p:graphicImage value="/images/#{cel.codigo}.jpg" />   
+				                  <h:outputText value="#{cel.preco}" styleClass="FontLabel">
+				                  		<f:convertNumber  type="currency" />
+				                  </h:outputText>	                  
+				                </h:panelGrid>
+				            </p:panel>
+				 
+				            <p:draggable for="pnl" revert="true" handle=".ui-panel-titlebar" stack=".ui-panel"/>
+				        </p:dataGrid>
+		</p:fieldset>
+				    
+		<p:fieldset id="selectedCels" legend="Celulares Selecionados" style="margin-top:20px">
+				        <p:outputPanel id="dropArea">
+				            <h:outputText value="!!!Arraste até aqui os 2 Modelos!!!" rendered="#{empty mbCelular.droppedCelulares}" style="font-size:24px;" />
+				            <p:dataTable id="selectedCelsTable" var="celComp" value="#{mbCelular.droppedCelulares}" rendered="#{not empty mbCelular.droppedCelulares}" selection="#{mbCelular.celularSelecionado}" >
+				            
+				          				            
+				            	<p:column headerText="" style="width:3%">
+							           
+							            <p:commandLink  oncomplete="PF('favDialog').show()" title="Marcar Favorito"  update="form" >							            	 
+			                    			<h:outputText styleClass="ui-icon ui-icon-star" style="margin:0 auto;" />
+			                    			<f:setPropertyActionListener value="#{celComp}" target="#{mbCelular.celularSelecionado}"  />			                    			
+			                			</p:commandLink>
+			                			 <!-- 
+			                			  <p:commandButton  oncomplete="PF('favDialog').show()" icon="ui-icon-search" title="View">
+								                <f:setPropertyActionListener value="#{celComp}" target="#{mbCelular.celularSelecionado}" />
+								           </p:commandButton>
+			                			  -->
+			                			
+				            	</p:column>
+				                <p:column headerText="Celular" style="font-weight: bold;width:25%">
+									<h:outputText value="#{celComp.nome}" />
+								</p:column>
+								<p:column headerText="Preço" style="font-weight: bold;width:10%">
+									<h:outputText value="#{celComp.preco}" style="color: red;" rendered="#{celComp.precoo == true}">
+										<f:convertNumber  type="currency" />
+					                  </h:outputText>
+									<h:outputText value="#{celComp.preco}" rendered="#{celComp.precoo == false}">
+										<f:convertNumber  type="currency" />
+					                  </h:outputText>
+									
+								</p:column>
+								<p:column headerText="Camera" style="font-weight: bold;width:10%">
+									<h:outputText value="#{celComp.camdescri}" style="color: red;" rendered="#{celComp.camera == true}"/>
+									<h:outputText value="#{celComp.camdescri}" rendered="#{celComp.camera == false}"/>
+								</p:column>
+								<p:column headerText="Processador" style="font-weight: bold;width:10%">
+									<h:outputText value="#{celComp.prodescri}" style="color: red;" rendered="#{celComp.processador == true}"/>
+									<h:outputText value="#{celComp.prodescri}" rendered="#{celComp.processador == false}"/>
+								</p:column>
+								<p:column headerText="Memória" style="font-weight: bold;width:10%">
+									<h:outputText value="#{celComp.mendescri}" style="color: red;" rendered="#{celComp.memoria == true}"/>
+									<h:outputText value="#{celComp.mendescri}" rendered="#{celComp.memoria == false}"/>
+								</p:column>
+								<p:column headerText="Tela" style="font-weight: bold;width:10%">
+									<h:outputText value="#{celComp.teladescri}" style="color: red;" rendered="#{celComp.tela == true}"/>
+									<h:outputText value="#{celComp.teladescri}" rendered="#{celComp.tela == false}"/>
+								</p:column>
+								
+				                
+				            </p:dataTable>
+				            <p:commandButton value="Limpar"  actionListener="#{mbCelular.limpar}" update="dropArea" icon="ui-icon-close" rendered="#{not empty mbCelular.droppedCelulares}"/>
+				        </p:outputPanel>
+		</p:fieldset>
+				    				    
+		<p:droppable for="selectedCels" tolerance="touch" activeStyleClass="ui-state-highlight" datasource="availableCels" onDrop="handleDrop">
+				        <p:ajax listener="#{mbCelular.onCelularDrop}" update="dropArea availableCels" />
+		</p:droppable>
+	
+		<p:panel>
+			<p:button outcome="favoritos"  value="Favoritos" icon="ui-icon-star"/> 
+		</p:panel>
+		
+		<p:dialog header="Adicionar aos Favoritos" widgetVar="favDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+			<p:ajax listener="#{mbCelular.salvarFavorito(mbCelular.celularSelecionado)}" />
+        	<p:outputPanel id="favDetail" style="text-align:center;">
+       		  
+            <p:panelGrid  columns="2" rendered="#{not empty mbCelular.celularSelecionado}" columnClasses="label,value">
+                <f:facet name="header">
+                    <p:graphicImage value="/images/#{mbCelular.celularSelecionado.codigo}.jpg"/> 
+                </f:facet>
+ 
+                
+                <h:outputText value="#{mbCelular.celularSelecionado.nome}" />
+                
+                           				
+            </p:panelGrid>
+             
+        </p:outputPanel>
+    </p:dialog>
+
+	</h:form>
+</h:body>
+</html>
