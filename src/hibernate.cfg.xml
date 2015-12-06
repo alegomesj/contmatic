@@ -4,9 +4,9 @@
 <hibernate-configuration>
 	<session-factory>
 		<property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-		<property name="hibernate.connection.password">ale432466</property>
-		<property name="hibernate.connection.url">jdbc:mysql://localhost:3306/test</property>
-		<property name="hibernate.connection.username">root</property>
+		<property name="hibernate.connection.password">profis</property>
+		<property name="hibernate.connection.url">jdbc:mysql://cpmy0109.servidorwebfacil.com:3306/profis_agenda</property>
+		<property name="hibernate.connection.username">profis_profis</property>
 		<property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
 		
 		<property name="hibernate.show_sql">true</property>

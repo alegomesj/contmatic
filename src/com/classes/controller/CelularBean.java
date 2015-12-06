@@ -132,10 +132,13 @@ public class CelularBean implements Serializable {
 			ex.printStackTrace();
 		} 
     }
-	public void salvarFavorito(Celular celularFavorito){
+		
+	public void salvarFavorito(){
 		try {
-			favoritoDAO.salvarFavorito(celularFavorito);
-			favoritos = favoritoDAO.listAll();
+			if (celularSelecionado != null){
+				favoritoDAO.salvarFavorito(celularSelecionado);
+				favoritos = favoritoDAO.listAll();
+			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		} finally {

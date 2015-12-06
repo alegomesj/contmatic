@@ -124,7 +124,7 @@
 	</p:layoutUnit>
 </p:layout>	
 		<p:dialog id="favDialog" header="Adicionado aos Favoritos" widgetVar="favDialog" modal="true"  > <!-- showEffect="fade" hideEffect="fade" -->
-			 <p:ajax listener="#{mbCelular.salvarFavorito(mbCelular.celularSelecionado)}" /> 
+			 <p:ajax listener="#{mbCelular.salvarFavorito}"/> 
         	<p:outputPanel id="favDetail" style="text-align:center;">
        		  
                   
