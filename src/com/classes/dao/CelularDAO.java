@@ -6,6 +6,7 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import com.classes.model.Celular;
@@ -41,7 +42,10 @@ public class CelularDAO implements Serializable {
 		session = HibernateUtil.getSessionfactory().openSession();
 
 		try {
-			return session.createCriteria(Celular.class, "c").list();
+			Criteria cr = session.createCriteria(Celular.class);
+			cr.addOrder(Order.asc("preco"));
+			return cr.list();
+			//return session.createCriteria(Celular.class, "c").list();
 		} catch (HibernateException ex) {
 			ex.printStackTrace();
 		} finally {

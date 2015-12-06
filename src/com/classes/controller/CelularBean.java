@@ -24,6 +24,8 @@ import org.primefaces.event.FileUploadEvent;
 
 
 
+import org.primefaces.event.SelectEvent;
+
 import com.classes.dao.CelularDAO;
 import com.classes.dao.FavoritoDAO;
 import com.classes.model.Celular;
@@ -145,7 +147,10 @@ public class CelularBean implements Serializable {
 		}
 	}
 	
-	
+	public void onRowSelectCelular(SelectEvent event) {
+		  System.out.println("SelectEvent Atendente : " + celularSelecionado.getNome());
+		  
+	}
 	
 
 

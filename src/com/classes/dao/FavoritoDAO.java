@@ -6,6 +6,7 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import com.classes.model.Celular;
@@ -29,7 +30,10 @@ public class FavoritoDAO implements Serializable {
 		session = HibernateUtil.getSessionfactory().openSession();
 
 		try {
-			return session.createCriteria(Favorito.class, "f").list();
+			Criteria cr = session.createCriteria(Favorito.class);
+			cr.addOrder(Order.desc("pontos"));
+			return cr.list();
+			//return session.createCriteria(Favorito.class, "f").list();
 		} catch (HibernateException ex) {
 			ex.printStackTrace();
 		} finally {
